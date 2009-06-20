@@ -1,0 +1,15 @@
+MapLight - A Ruby wrapper to the MapLight web service api.
+
+Pre-requisites
+
+
+requires the following gems
+
+  [sudo] gem install json restclient micronaut
+
+Note 'micronaut' is only needed if you plan on running the examples.
+
+  $ rake examples 
+
+will show the state of play
+
