@@ -40,16 +40,16 @@ describe 'MapLight::ApiUrl' do
   describe 'when creating the core uri string (minus the query parameters)' do
     
     before(:each) do
-      @query_params = {:format=>'wombat', :api_version=>'v202'}
+      @query_params = {}
       @api_url_string = MapLight::ApiUrl.new(@query_params).to_s()
     end
     
     it 'should include the response format' do
-      @api_url_string.should =~ /wombat/
+      @api_url_string.should =~ /json/
     end
     
     it 'should include the api version' do
-      @api_url_string.should =~ /v202/
+      @api_url_string.should =~ /v1/
     end
     
     

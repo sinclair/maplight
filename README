@@ -2,14 +2,31 @@ MapLight - A Ruby wrapper to the MapLight web service api.
 
 Pre-requisites
 
+*MapLight api key
 
-requires the following gems
+Apply for a MapLight api key at http://maplight.org
 
-  [sudo] gem install json restclient micronaut
 
-Note 'micronaut' is only needed if you plan on running the examples.
+*Gem dependencies
+
+  $ [sudo] gem install json restclient [micronaut mocha cucumber]
+
+*Note* 'micronaut', 'mocha' and 'cucumber' are needed if you plan on running the examples:
 
   $ rake examples 
 
-will show the state of play
+or the features
+
+  $ cucumber features
+
+and if I were you then I would! ;)
+
+These will show the state of play ... 
+
+
+Getting started.
+
+Look at any of the features files. These should provide an idea of usage.
+
+
 

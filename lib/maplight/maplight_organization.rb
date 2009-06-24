@@ -12,11 +12,12 @@ module MapLight
       end
       
     end
-  
-    def self.all_for(search_criteria={})
-      []
-    end
     
+    def self.search(name)
+      results = Gateway.new().get(:organization_search, :search=>name)
+      results['organizations'].collect { |params| self.new(params) }
+    end
+
   end
 
 end

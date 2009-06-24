@@ -29,7 +29,7 @@ module MapLight
     end
 
     def format()
-      @uri_parameters[:format]
+      DEFAULT_OUTPUT_FORMAT || @uri_parameters[:api_version]
     end
     
     def api_method()
@@ -38,7 +38,7 @@ module MapLight
     end
     
     def api_version()
-      @uri_parameters[:api_version]
+      API_VERSION || @uri_parameters[:api_version]
     end
     
     def api_key()
@@ -50,39 +50,32 @@ module MapLight
   class Gateway
     
     def initialize(params={})
-      @gateway_client = params[:gateway_client] || Client.new()
+      @service_client = params[:gateway_client] || Client.new()
       @response_parser = params[:response_parser] || ResponseParser.new()
     end
 
-    def organization_search(name, exact=0)
-      url = "#{BASE_URL}/map.organization_search_#{api_version()}.#{format()}?apikey=#{apikey()}&search=#{name}&exact=#{exact}"
-      response_string = @gateway_client.get(url)
-      @response_parser.parse(response_string)
-    end
-    
-    def organization_positions(id)
-      url = "#{BASE_URL}/map.organization_positions_#{api_version()}.#{format()}?apikey=#{apikey()}&organization_id=#{id}"
-      response_string = @gateway_client.get(url)
-      @response_parser.parse(response_string)
-    end
-    
-    private
-    def default_search_criteria(override={})
-      @default_search_criteria ||= {:format=>api_response_format(), :api_version=>api_version()}
+    def get(method_name, params)
+      @api_url = ApiUrl.new( {:api_method=>method_name, :api_version=>'v1'}.merge(params) )
+      @response_parser.parse( @service_client.get(@api_url.to_s()) )
     end
 
-    def api_key()
-      MapLight.api_key()
-    end
-    
-    def api_version()
-      MapLight.API_VERSION
-    end
-    
-    def api_response_format()
-      MapLight.DEFAULT_OUTPUT_FORMAT
-    end
-    alias_method :format, :api_response_format
+    private
+      def default_search_criteria(override={})
+        @default_search_criteria ||= {:format=>api_response_format(), :api_version=>api_version()}
+      end
+
+      def api_key()
+        MapLight.api_key()
+      end
+      
+      def api_version()
+        MapLight.API_VERSION
+      end
+      
+      def api_response_format()
+        MapLight.DEFAULT_OUTPUT_FORMAT
+      end
+      alias_method :format, :api_response_format
     
   end
   
