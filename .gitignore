@@ -1,0 +1,6 @@
+# ignore all vim backup files
+*.swp
+
+# ignore this freckin' o-rdoc/ directory 
+o-rdoc
+
