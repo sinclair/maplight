@@ -23,3 +23,7 @@ end
 Then /^the result should contain at least one Organization$/ do
   @organizations.should_not be_empty
 end
+
+Then /^the result should contain no Organization$/ do
+  @organizations.should be_empty
+end

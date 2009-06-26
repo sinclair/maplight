@@ -19,10 +19,10 @@ module MapLight
     end
     
     def to_s()
-      "#{BASE_URL}/map.#{api_method()}_#{api_version()}.#{format()}?apikey=#{api_key()}&search=#{'glasgow'}"
+      "#{BASE_URL}/map.#{api_method()}_#{api_version()}.#{format()}?apikey=#{api_key()}&#{query_parameters_string()}"
     end
     
-    def query_parameters_string(params=@uri_parameters)
+    def query_parameters_string(params=@uri_parameters[:query_params])
       params.collect { |k, v|
         "#{k.to_s()}=#{CGI.escape( v.to_s() )}"
       }.join('&')
@@ -55,7 +55,8 @@ module MapLight
     end
 
     def get(method_name, params)
-      @api_url = ApiUrl.new( {:api_method=>method_name, :api_version=>'v1'}.merge(params) )
+      @api_url = ApiUrl.new( {:api_method=>method_name, :api_version=>'v1'}.merge(:query_params=>params) )
+
       @response_parser.parse( @service_client.get(@api_url.to_s()) )
     end
 

@@ -1,22 +1,28 @@
 require File.join( File.dirname(__FILE__), 'example_helper' )
 
 
-describe 'Organization' do
+describe 'Organization', :focused=>false do
     
-  describe 'when searching by name', :focused=>false do
+  describe 'when searching by name'do
     
     before(:each) do
       RestClient.stubs(:get).returns( "[{:name=>'Glasgow Bail Bonds', :organization_id=>'1234'}]" )
     end
 
 
-    it 'should call the gateway with the name to use in the search' do
+    it 'should return a collection of Organizations when the search is successful' do
       RestClient.expects(:get).once().with( regexp_matches(/search\=glasgow$/) ).returns( '{ "organizations": [ { "organization_id": "8469", "name": "Glasgow Bail Bonds" } ] }'  )
       MapLight::Organization.search('glasgow')[0].class.should == MapLight::Organization
     end
+
+    it 'should return an empty result when the search is unsuccessful'  do
+      RestClient.expects(:get).once().returns( '{ "organizations": [  ] }'  )
+      MapLight::Organization.search('no_org_to_be_found').should be_empty
+    end
+
   end
   
-    describe 'when initializing' do
+  describe 'when initializing' do
     before(:each) do
       @instantiation_params={"name"=>"Glasgow Bail Bonds", "organization_id"=>"8469"}
       @organization = MapLight::Organization.new(@instantiation_params)

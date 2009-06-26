@@ -40,7 +40,7 @@ describe 'MapLight::ApiUrl' do
   describe 'when creating the core uri string (minus the query parameters)' do
     
     before(:each) do
-      @query_params = {}
+      @query_params = {:query_params=>{}}
       @api_url_string = MapLight::ApiUrl.new(@query_params).to_s()
     end
     
