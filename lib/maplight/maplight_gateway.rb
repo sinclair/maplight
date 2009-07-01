@@ -60,11 +60,17 @@ module MapLight
       @response_parser.parse( @service_client.get(@api_url.to_s()) )
     end
 
+    def self.get_organization_positions(organization_id)
+      url = "http://maplight.org/services_open_api/map.organization_positions_v1.json?apikey=#{MapLight.api_key()}&organization_id=#{organization_id}"
+      ResponseParser.new().parse( Client.new().get(url) )
+    end
+    
     private
       def default_search_criteria(override={})
         @default_search_criteria ||= {:format=>api_response_format(), :api_version=>api_version()}
       end
 
+      
       def api_key()
         MapLight.api_key()
       end
@@ -87,6 +93,7 @@ module MapLight
     end
 
     def get(url)
+#puts "---- #{url}"
       @client.get(url)
     end
 
@@ -99,6 +106,7 @@ module MapLight
     end
 
     def parse(gateway_response_string)
+#puts "++++ #{gateway_response_string}"
       @parser.parse(gateway_response_string)
     end
 

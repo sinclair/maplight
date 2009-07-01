@@ -53,5 +53,35 @@ describe 'Organization', :focused=>false do
 
   end
 
+
+  describe 'positions retrieval', :focused=>false do
+    before(:all) do
+      @position_data= {'positions'=>
+        {"citation"=>" (n.d.). x3ccitex3e2008.01.22 H.R. 3959 NAR Letter Opposingx3c/citex3e. Retrieved n.d., from  Web site: x3ca href=""x3ex3c/ax3e.", 
+          "prefix"=>"H", "measure"=>"H.R. 3959 (110th) ", "jurisdiction"=>"US", "number"=>"3959", 
+          "topic"=>"To amend the National Flood Insurance Act of 1968 to provide for the phase-in of actuarial rates for certain pre-FIRM properties", 
+          "session"=>"110", 
+          "url"=>"http://maplight.org/map/us/bill/72584", 
+          "disposition"=>"oppose"}}      
+    end
+    
+    before(:each) do
+      MapLight.api_key= 'caee16151a22197259b754cdb09b18ac'
+      @organization = MapLight::Organization.new(:name=>'Test this inc.', :organization_id=>22135)
+    end
+    
+    it 'should return a collection of at least one when successful' do
+      @organization.positions().should_not be_empty
+    end
+    
+    it 'should instantiate a Position' do
+      @organization.positions[0].class.should == MapLight::Position    
+    end
+    
+    it 'should call the MapLight::Gateway to retrieve the Positions' do
+      MapLight::Gateway.expects(:get_organization_positions).once.with(22135).returns(@position_data)
+      @organization.positions()
+    end
+  end
 end
 
