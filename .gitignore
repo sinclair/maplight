@@ -1,6 +1,9 @@
 # ignore all vim backup files
 *.swp
 
+# my api key
+api_key.rb
+
 # ignore this freckin' o-rdoc/ directory 
 o-rdoc
 

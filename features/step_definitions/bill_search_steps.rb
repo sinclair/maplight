@@ -1,6 +1,3 @@
-require 'spec/expectations'
-require 'cucumber/formatter/unicode'
-require File.join( File.dirname(__FILE__), '..', '..', 'lib', 'maplight' )
 
 #bills_json = '{ "bills": [] }'
 #RestClient.stubs(:get).returns(bills_json

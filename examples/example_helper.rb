@@ -5,8 +5,9 @@ require 'micronaut'
 require 'mocha'
 
 require File.join( File.dirname(__FILE__), '/../lib/maplight' )
-
-MapLight.api_key= 'caee16151a22197259b754cdb09b18ac'
+if File.exists?( apikey = File.join( File.dirname(__FILE__), '..', 'api_key.rb') ) then
+  require apikey
+end
 
 Micronaut.configure do |config|
   config.filter_run :focused => true
