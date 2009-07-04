@@ -55,7 +55,7 @@ module MapLight
     end
 
     def get(url)
-#puts "---- #{url}"
+puts "---- #{url}"
       @client.get(url)
     end
 

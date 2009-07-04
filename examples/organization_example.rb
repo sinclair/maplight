@@ -66,7 +66,6 @@ describe 'Organization', :focused=>false do
     end
     
     before(:each) do
-      MapLight.api_key= 'caee16151a22197259b754cdb09b18ac'
       @organization = MapLight::Organization.new(:name=>'Test this inc.', :organization_id=>22135)
     end
     
