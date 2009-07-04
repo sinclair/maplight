@@ -10,6 +10,5 @@ describe 'MapLight::Gateway' do
     end
 
   end
-
-
+  
 end

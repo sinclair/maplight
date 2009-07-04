@@ -46,6 +46,50 @@ module MapLight
     end
     
   end
+
+
+  class Client
+
+    def initialize(client=RestClient)
+      @client= client
+    end
+
+    def get(url)
+#puts "---- #{url}"
+      @client.get(url)
+    end
+
+  end
+
+
+  class ResponseParser
+
+    def initialize(parser=JSON)
+      @parser= parser
+    end
+
+    def parse(gateway_response_string)
+#puts "++++ #{gateway_response_string}"
+      @parser.parse(gateway_response_string)
+    end
+
+  end
+
+
+  class Service
+
+    def initialize(http_client=Client.new(), data_parser=ResponseParser.new())
+      @service_client = http_client
+      @response_parser = data_parser
+    end
+    
+    def get(url)
+      response_data = @service_client.get(url)
+      @response_parser.parse(response_data)
+    end
+    
+  end
+ 
   
   class Gateway
     
@@ -61,15 +105,25 @@ module MapLight
     end
 
     def self.get_organization_positions(organization_id)
-      url = "http://maplight.org/services_open_api/map.organization_positions_v1.json?apikey=#{MapLight.api_key()}&organization_id=#{organization_id}"
-      ResponseParser.new().parse( Client.new().get(url) )
+      url = "#{BASE_URL}/map.organization_positions_v1.json?apikey=#{MapLight.api_key()}&organization_id=#{organization_id}"
+      call_service_api(url)
     end
     
+    def self.get_bills_by_title(title_word)
+      url = "#{BASE_URL}/map.bill_search_v1.json?apikey=#{MapLight.api_key()}&jurisdiction=us&search=#{CGI.escape(title_word)}"
+      call_service_api(url)
+    end
+
     private
+      def self.call_service_api(url)
+        Service.new().get(url)
+      end
+    
+    private
+          
       def default_search_criteria(override={})
         @default_search_criteria ||= {:format=>api_response_format(), :api_version=>api_version()}
       end
-
       
       def api_key()
         MapLight.api_key()
@@ -84,32 +138,6 @@ module MapLight
       end
       alias_method :format, :api_response_format
     
-  end
-  
-  class Client
-
-    def initialize(client=RestClient)
-      @client= client
-    end
-
-    def get(url)
-#puts "---- #{url}"
-      @client.get(url)
-    end
-
-  end
-  
-  class ResponseParser
-
-    def initialize(parser=JSON)
-      @parser= parser
-    end
-
-    def parse(gateway_response_string)
-#puts "++++ #{gateway_response_string}"
-      @parser.parse(gateway_response_string)
-    end
-
   end
   
 end

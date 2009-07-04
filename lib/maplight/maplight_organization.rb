@@ -1,4 +1,3 @@
-
 module MapLight
   
   class Organization
@@ -26,13 +25,14 @@ module MapLight
   end
   
   class Position
-    attr_reader :citation, :prefix, :session, :topic, :url, :disposition
 
     def self.search(organization_id)
       MapLight::Gateway.get_organization_positions( organization_id )['positions'].collect do |position_data|
         self.new(position_data)
       end
     end
+
+    attr_reader :citation, :prefix, :session, :topic, :url, :disposition
     
     def initialize(params)
       params.each do |key, value|    

@@ -17,7 +17,10 @@ describe 'MapLight::ApiUrl' do
   end
 
   describe 'when creating the query parameters', :focused=>false do
-    MapLight.api_key= 'keynumber1'
+
+    before(:all) do
+      MapLight.api_key= 'keynumber1'
+    end
 
     before(:each) do
       @query_params = {:search=>'glasgow', :exact=>1}
