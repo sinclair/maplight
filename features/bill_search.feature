@@ -1,7 +1,7 @@
 Feature: Bill Search
   In order to have access to data about Bills (Legislation)
   As a developer of applications
-  I want to seach for Bills
+  I want to search for Bills
   
   Scenario: Successful Bill search
     Given that I have registered and received a MapLight api key from maplight.org

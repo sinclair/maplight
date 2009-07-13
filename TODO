@@ -1,0 +1,15 @@
+Organization Search 
+- by name
+
+Organization Positions
+- lookup by organization_id
+
+Bill Search
+- by name (full or partial)
+
+Bill Positions
+- by session, prefix, number
+
+Bill List
+- organizations bill positions for a given session
+ (session, organization_id)

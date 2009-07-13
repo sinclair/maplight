@@ -90,6 +90,26 @@ module MapLight
     
   end
  
+  class QueryParametersBuilder
+        
+    def initialize(maplight_api_key)
+      @key=maplight_api_key
+    end
+    
+    def to_s(query_parameters_hash)
+      result_collector =
+          query_parameters_hash.collect do |parameter, value|
+            ["#{parameter.to_s()}=#{CGI.escape( value.to_s() )}"] if value
+          end
+      result_collector << apikey_parameter()
+      result_collector.compact.join('&')
+    end
+
+    private
+      def apikey_parameter()
+        ["apikey=#{@key}"]
+      end
+  end
   
   class Gateway
     
@@ -100,7 +120,6 @@ module MapLight
 
     def get(method_name, params)
       @api_url = ApiUrl.new( {:api_method=>method_name, :api_version=>'v1'}.merge(:query_params=>params) )
-
       @response_parser.parse( @service_client.get(@api_url.to_s()) )
     end
 
@@ -108,7 +127,15 @@ module MapLight
       url = "#{BASE_URL}/map.organization_positions_v1.json?apikey=#{MapLight.api_key()}&organization_id=#{organization_id}"
       call_service_api(url)
     end
+
+    def self.get_bill_positions(search_parameters)
+      parameters = {:jurisdiction=>'us'}.merge(search_parameters)
+      url = "#{BASE_URL}/map.bill_positions_v1.json?#{build_query_parameters(parameters)}"
+      call_service_api(url)
+    end
     
+    
+
     def self.get_bills_by_title(title_word)
       url = "#{BASE_URL}/map.bill_search_v1.json?apikey=#{MapLight.api_key()}&jurisdiction=us&search=#{CGI.escape(title_word)}"
       call_service_api(url)
@@ -119,6 +146,11 @@ module MapLight
         Service.new().get(url)
       end
     
+      def self.build_query_parameters(query_parameters)
+        @builder ||= QueryParametersBuilder.new( MapLight.api_key() )
+        @builder.to_s(query_parameters)
+      end
+
     private
           
       def default_search_criteria(override={})
